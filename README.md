@@ -14,6 +14,11 @@ using `filedialog.askopenfilename()` to get the path
 library: openCV  
 `cv2.VideoCapture`  
 `cv2.imwrite`
+
+<center>
+<img src="https://github.com/LoewiLu/Style_Transfer_for_Videos/blob/master/gifs/ballet.gif"/>
+</center>   
+
 <center>
     <img src="https://github.com/LoewiLu/Style_Transfer_for_Videos/blob/master/gifs/parts.gif"/>
 </center>
