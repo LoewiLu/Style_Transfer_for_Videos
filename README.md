@@ -37,14 +37,11 @@ library: openCV
 ### 5. Images to Video  
 library: openCV  
 `cv2.VideoWriter`
-<center>
-    <img src="https://github.com/LoewiLu/Style_Transfer_for_Videos/blob/master/gifs/ui.gif"/>
-</center>
-
-adding mask 
+mask added:
 <center>
     <img src="https://github.com/LoewiLu/Style_Transfer_for_Videos/blob/master/gifs/final.gif"/>
 </center>
+
 ### 6. Audio Generation with GAN
 
 
