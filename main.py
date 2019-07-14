@@ -65,7 +65,7 @@ def makeMask(reverse = False):
     for filename in glob.glob(p):
         
         img = cv2.imread(filename)
-        rgb2Bw(img,filename, reverse) #binarization if the image     
+        rgb2Bw(img,filename, reverse) #binarization of the image
         img = cv2.imread(filename)
 
 def sort_key(s):
