@@ -12,7 +12,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 import shutil
-
+import re
 
 def getPath():
     fname = filedialog.askopenfilename(title='open video file', filetypes=[('mp4 files', '*.mp4'), ('All Files', '*')])
@@ -26,15 +26,15 @@ def video2Imgs(videopath, frame_time = 2):
         shutil.rmtree(folder_path + '/imgs')
     os.makedirs(folder_path + '/imgs')
     
-    cap = cv2.VideoCapture(videopath)#
-    ret, frame = cap.read()
+    cap = cv2.VideoCapture(videopath)
+    ret, frame = cap.read() #ret:bool, False if ends; frame: 3D matrix
     
     n = count = 1    
     while ret:
         ret, frame = cap.read()
         pic_path = folder_path + '/imgs/'
 
-        if count % frame_time == 0:
+        if count % frame_time == 0: #proceed every frame_time
             p = pic_path +  '/frame_' + str(n) + '.jpg'
             cv2.imwrite(p, frame)  
             n += 1
@@ -62,12 +62,14 @@ def makeMask(reverse = False):
     shutil.copytree(folder_path + '/imgs', folder_path + '/imgs_mask')
     p = folder_path + '/imgs_mask/*.jpg'
     
-    for filename in sorted(glob.glob(p)):
+    for filename in glob.glob(p):
         
         img = cv2.imread(filename)
-        rgb2Bw(img,filename, reverse)        
+        rgb2Bw(img,filename, reverse) #binarization if the image     
         img = cv2.imread(filename)
 
+def sort_key(s):
+    return int(re.findall('(\d+)\.',s)[0])
 
 def imgs2Video(file_path):
     
@@ -76,13 +78,14 @@ def imgs2Video(file_path):
     
     img_lst = []
     
-    for filename in sorted(glob.glob(file_path)):
+    for filename in sorted(glob.glob(file_path), key = sort_key):
+        #print(filename)
         img = cv2.imread(filename)
         height, width, layers = img.shape
         img_lst.append(img)
 
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(folder_path + '/output/' +'project.mp4', fourcc, 18.0, (width, height))
+    out = cv2.VideoWriter(folder_path + '/output/' +'project_final.mp4', fourcc, 18.0, (width, height))
     
     for img in img_lst:
         out.write(img)
@@ -96,7 +99,8 @@ if __name__ is '__main__':
     folder_path, _ = os.path.split(videopath)
     
     video2Imgs(videopath, frame_time = 2)
-    makeMask(reverse = True) #BGW
+    makeMask(reverse = False) #BGW
     #gererate() #NST  the result should be stored in the folder named ../generated/
     imgs2Video(folder_path + '/generated/*.jpg')
     
+#%%
